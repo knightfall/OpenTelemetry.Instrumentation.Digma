@@ -30,6 +30,7 @@ public interface IDecoratedService
     );
 
     void MethodExplicitlyMarkedForTracingWithAttributes(Action action);
+    void MethodExplicitlyMarkedForTracingWithAttributes(Action stateValidation, bool overloaded);
 }
     
 [ActivitiesAttributes("att1:value1")]
@@ -45,6 +46,13 @@ public class DecoratedService : IDecoratedService
     [TraceActivity()]
     [ActivitiesAttributes("att1:value1")]
     public void MethodExplicitlyMarkedForTracingWithAttributes(Action stateValidation)
+    {
+        stateValidation();
+    }
+
+    [TraceActivity()]
+    [ActivitiesAttributes("att2:value2")]
+    public void MethodExplicitlyMarkedForTracingWithAttributes(Action stateValidation, bool overloaded)
     {
         stateValidation();
     }

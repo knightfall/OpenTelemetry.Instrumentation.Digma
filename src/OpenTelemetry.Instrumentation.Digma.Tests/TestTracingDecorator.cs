@@ -45,6 +45,22 @@ public class TestTracingDecorator
 
         });
     }
+
+    [TestMethod]
+    public void Attributes_Injected_To_Marked_Overloaded_Method()
+    {
+        DecoratedService service = new DecoratedService();
+        IDecoratedService tracingDecorator = TraceDecorator<IDecoratedService>.Create(service);
+        tracingDecorator.MethodExplicitlyMarkedForTracingWithAttributes(() =>
+        {
+            Assert.IsNotNull(Activity.Current);
+            AssertHasCommonTags(Activity.Current, ServiceInterfaceFqn,
+                "MethodExplicitlyMarkedForTracingWithAttributes", "Action,bool");
+            AssertHasTag(Activity.Current, "att2", "value2");
+
+        }, true);
+    }
+
     private MockProcessor _mockProcessor = new ();
     
     // [TestMethod]
